@@ -1,0 +1,26 @@
+{
+  "name": "nuxtHighlighter",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/toast": "^3.3.1",
+    "core-js": "^3.17.3",
+    "express": "^4.17.1",
+    "nuxt": "^2.15.8",
+    "vue-scrollto": "^2.20.0"
+  },
+  "devDependencies": {
+    "@nuxtjs/composition-api": "^0.29.0",
+    "@nuxtjs/tailwindcss": "^4.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "postcss": "^8.3.6",
+    "prettier": "^2.4.0"
+  }
+}
