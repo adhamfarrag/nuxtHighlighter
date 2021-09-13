@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import { scroller } from 'vue-scrollto/src/scrollTo'
 
 export default {
   data() {
@@ -30,9 +29,8 @@ export default {
         )[this.$route.query.id]
       })
       let highligtedElement = this.$route.query.id
-      const scrollToId = scroller()
-      scrollToId(`#${highligtedElement}`)
-    }
+      this.$scrollTo(`#${highligtedElement}`, 900)
+    }      
   },
   computed: {
     applyHighlights() {

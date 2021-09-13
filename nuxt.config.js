@@ -1,6 +1,4 @@
 export default {
-  ssr: false,
-
   head: {
     title: 'Nuxt Highlighter',
     htmlAttrs: {
@@ -39,9 +37,9 @@ export default {
 
   axios: {},
 
-  build: {},
-
   publicRuntimeConfig: {
-    baseURL: process.env.baseURL || 'http://localhost:3000/',
+    baseURL: process.env.baseURL || 'http://localhost:3000',
   },
+
+  build: {},
 }
