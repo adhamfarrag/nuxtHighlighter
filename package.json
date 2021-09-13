@@ -12,6 +12,7 @@
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/toast": "^3.3.1",
     "core-js": "^3.17.3",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "nuxt": "^2.15.8",
     "vue-scrollto": "^2.20.0"
