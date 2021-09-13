@@ -9,6 +9,8 @@ const corsOptions = {
 }
 app.use(cors(corsOptions))
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
 app.all('/highlights', (req, res) => {
   res.json({ highlights: highlights })
 })
