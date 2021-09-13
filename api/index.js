@@ -4,7 +4,7 @@ const app = express()
 
 let highlights = [{ IdOne: 'TEXT_CONTECT' }]
 const corsOptions = {
-  origin: process.env.baseURL || 'http://localhost:3000',
+  origin: process.env.baseURL || 'https://nuxthighlighter.vercel.app',
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 app.use(cors(corsOptions))
