@@ -40,4 +40,8 @@ export default {
   axios: {},
 
   build: {},
+
+  publicRuntimeConfig: {
+    baseURL: process.env.baseURL || 'http://localhost:3000/',
+  },
 }

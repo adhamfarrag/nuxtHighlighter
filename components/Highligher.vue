@@ -15,7 +15,7 @@
           class="flex items-center justify-center w-8 h-8 text-2xl bg-gray-700 rounded-md "
         >
           <IconLink
-            class="w-5 h-5 text-white cursor-pointer fill-current  hover:text-blue-300"
+            class="w-5 h-5 text-white cursor-pointer fill-current hover:text-blue-300"
           />
         </div>
         <div class="inline-block w-4 -ml-1 overflow-hidden">
@@ -83,7 +83,7 @@ export default {
       this.$axios.$post('/api/highlight', payload).then(({ data }) => data)
 
       this.showMenu = false
-      const url = 'http://localhost:3000/?id=' + this.id
+      const url = `${this.$config.baseURL}/?id=` + this.id
       this.copy(url)
     },
     async copy(s) {
