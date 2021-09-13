@@ -38,7 +38,7 @@ export default {
   axios: {},
 
   publicRuntimeConfig: {
-    baseURL: 'https://nuxthighlighter.vercel.app/?id=kti3swakc4scvsn1g9d',
+    baseURL: process.env.baseURL || 'http://localhost:3000',
   },
 
   build: {},
