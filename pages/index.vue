@@ -31,7 +31,7 @@ export default {
     const route = useRoute()
     const highlightedTextId = computed(() => route.value.query.id)
     const scroll = useScrollTo()
-    const { $axios } = useContext()
+    const { $axios, $config } = useContext()
 
     highlightedText.value = ''
     mainText.value =
@@ -55,7 +55,7 @@ export default {
     async function detectElement(params) {
       if (!params) return
       else {
-        $axios.$get('/api/highlights').then((data) => {
+        $axios.$get(`${$config.baseURL}/api/highlights`).then((data) => {
           highlightedText.value = data.highlights.find(
             (x) => Object.keys(x)[0] == params
           )[params]

@@ -36,6 +36,7 @@ import {
   onMounted,
   onBeforeUnmount,
   wrapProperty,
+  useContext,
 } from '@nuxtjs/composition-api'
 import axios from 'axios'
 const useToast = wrapProperty('$toast', false)
@@ -49,6 +50,7 @@ export default {
     const id = ref('')
     const root = ref(null)
     const toast = useToast()
+    const { $config } = useContext()
 
     const highlightableEl = computed(() => {
       return slots.default()[0]?.elm
@@ -100,7 +102,7 @@ export default {
       axios.post('/api/highlight', payload).then(({ data }) => data)
 
       showMenu.value = false
-      const url = `${this.$config.baseURL}/?id=` + this.id
+      const url = `${$config.baseURL}/?id=` + this.id
       copy(url)
     }
 
