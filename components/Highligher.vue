@@ -4,8 +4,8 @@
       <div
         v-show="showMenu"
         :style="{
-          left: `${x}px`,
-          top: `${y}px`,
+          left: `${positionX}px`,
+          top: `${positionY}px`,
         }"
         class="absolute flex flex-col items-center justify-center duration-500 transform "
         @mousedown.prevent=""
@@ -15,12 +15,12 @@
           class="flex items-center justify-center w-8 h-8 text-2xl bg-gray-700 rounded-md "
         >
           <IconLink
-            class="w-5 h-5 text-white cursor-pointer fill-current hover:text-blue-300"
+            class="w-5 h-5 text-white cursor-pointer fill-current  hover:text-blue-300"
           />
         </div>
         <div class="inline-block w-4 -ml-1 overflow-hidden">
           <div
-            class="w-2 h-2 mx-auto origin-top-left transform -rotate-45 bg-gray-700 "
+            class="w-2 h-2 mx-auto origin-top-left transform -rotate-45 bg-gray-700  z-100"
           ></div>
         </div>
       </div>
@@ -30,66 +30,92 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      x: 0,
-      y: 0,
-      showMenu: false,
-      selectedText: '',
-      id: '',
-    }
-  },
-  computed: {
-    highlightableEl() {
-      return this.$slots.default[0].elm
-    },
-  },
-  mounted() {
-    window.addEventListener('mouseup', this.createHighlight)
-  },
+import {
+  ref,
+  computed,
+  onMounted,
+  onBeforeUnmount,
+  wrapProperty,
+} from '@nuxtjs/composition-api'
+import axios from 'axios'
+const useToast = wrapProperty('$toast', false)
 
-  beforeDestroy() {
-    window.removeEventListener('mouseup', this.createHighlight)
-  },
-  methods: {
-    createHighlight() {
+export default {
+  setup(_, { slots }) {
+    const positionX = ref(0)
+    const positionY = ref(0)
+    const showMenu = ref(false)
+    const selectedText = ref('')
+    const id = ref('')
+    const root = ref(null)
+    const toast = useToast()
+
+    const highlightableEl = computed(() => {
+      return slots.default()[0]?.elm
+    })
+
+    onMounted(() => {
+      window.addEventListener('mouseup', createHighlight)
+      console.log('here it is', slots)
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('mouseup', createHighlight)
+    })
+
+    async function copy(s) {
+      await navigator.clipboard.writeText(s)
+      toast.success('Highlight copied to clipboard!')
+      console.log(s)
+    }
+
+    function createHighlight() {
       const selection = window.getSelection()
       const selectionRange = selection.getRangeAt(0)
       const startNode = selectionRange.startContainer.parentNode
       const endNode = selectionRange.endContainer.parentNode
-      if (
-        !startNode.isSameNode(this.highlightableEl) ||
-        !startNode.isSameNode(endNode)
-      ) {
-        this.showMenu = false
-        return
-      }
+      // if (
+      //   !startNode.isSameNode(highlightableEl) ||
+      //   !startNode.isSameNode(endNode)
+      // ) {
+      //   showMenu.value = false
+      //   return
+      // }
       const { x, y, width } = selectionRange.getBoundingClientRect()
       if (!width) {
-        this.showMenu = false
+        showMenu.value = false
         return
       }
-      this.x = x + width / 2
-      this.y = y + window.scrollY - 42.5
-      this.selectedText = selection.toString()
-      this.showMenu = true
-    },
-    highlight() {
+      positionX.value = x + width / 2
+      positionY.value = y + window.scrollY - 42.5
+      selectedText.value = selection.toString()
+      showMenu.value = true
+    }
+
+    function highlight() {
       const payload = {}
-      this.id = Date.now().toString(36) + Math.random().toString(36).substr(2)
-      payload[this.id] = this.selectedText
+      id.value = Date.now().toString(36) + Math.random().toString(36).substr(2)
+      payload[id.value] = selectedText.value
 
-      this.$axios.$post('/api/highlight', payload).then(({ data }) => data)
+      axios.post('/api/highlight', payload).then(({ data }) => data)
 
-      this.showMenu = false
+      showMenu.value = false
       const url = `${this.$config.baseURL}/?id=` + this.id
-      this.copy(url)
-    },
-    async copy(s) {
-      await navigator.clipboard.writeText(s)
-      this.$toast.success('Highlight copied to clipboard!')
-    },
+      copy(url)
+    }
+
+    return {
+      positionX,
+      positionY,
+      showMenu,
+      selectedText,
+      id,
+      highlightableEl,
+      createHighlight,
+      highlight,
+      root,
+      toast,
+    }
   },
 }
 </script>
