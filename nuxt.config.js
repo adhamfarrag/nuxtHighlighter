@@ -41,5 +41,10 @@ export default {
     baseURL: process.env.baseURL || 'http://localhost:3000',
   },
 
+  tailwindcss: {
+    exposeConfig: true,
+    viewer: false,
+  },
+
   build: {},
 }

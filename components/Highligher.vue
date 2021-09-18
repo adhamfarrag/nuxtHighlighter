@@ -58,7 +58,6 @@ export default {
 
     onMounted(() => {
       window.addEventListener('mouseup', createHighlight)
-      console.log('here it is', slots)
     })
 
     onBeforeUnmount(() => {
@@ -68,7 +67,6 @@ export default {
     async function copy(s) {
       await navigator.clipboard.writeText(s)
       toast.success('Highlight copied to clipboard!')
-      console.log(s)
     }
 
     function createHighlight() {
@@ -94,16 +92,16 @@ export default {
       showMenu.value = true
     }
 
-    function highlight() {
+    async function highlight() {
       const payload = {}
       id.value = Date.now().toString(36) + Math.random().toString(36).substr(2)
       payload[id.value] = selectedText.value
 
-      axios.post('/api/highlight', payload).then(({ data }) => data)
-
-      showMenu.value = false
-      const url = `${$config.baseURL}/?id=` + this.id
-      copy(url)
+      await axios.post('/api/highlight', payload).then(({ data }) => {
+        showMenu.value = false
+        const url = `${$config.baseURL}/?id=` + data
+        copy(url)
+      })
     }
 
     return {
